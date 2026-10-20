@@ -1,20 +1,20 @@
-# Aplikasi Buku Harian (Diary App)
+# Praktikum Pertemuan 3 - Desain UI & Layout Responsif (Diary App)
 
-Nama:Renci Aprilia
-NIM:2430511040
+## Identitas Mahasiswa
+- Nama: Renci Aprilia
+- NIM:2430511040
+- Program Studi:Teknik Informatika
+- Universitas:Universitas Muhammadiyah Sukabumi
 
-## Langkah Menjalankan Proyek
-1. Buka terminal dan arahkan ke dalam direktori folder proyek
-2. Jalankan perintah npm install untuk menginstal seluruh dependensi yang dibutuhkan
-3. Ketik perintah npx expo start di terminal untuk menjalankan server pengembangan
-4. Buka aplikasi Expo Go di smartphone dan lakukan scan pada QR Code yang muncul di layar terminal
+## Fitur yang Diselesaikan
+- Implementasi Design Tokens untuk sentralisasi dan konsistensi warna, tipografi, radius, serta spasi di seluruh komponen aplikasi.
+- Pembuatan Layout Responsif menggunakan `FlatList` yang dapat beradaptasi dari tampilan 1 kolom menjadi 2 kolom berdasarkan ukuran layar perangkat.
+- Pembuatan DiaryDetailModal interaktif yang muncul sebagai *overlay* untuk menampilkan isi lengkap dan hero image ketika sebuah entri ditekan.
+- Mengoptimalkan komponen DiaryCard menggunakan Flexbox agar fleksibel, serta menerapkan standar aksesibilitas dasar seperti `accessibilityLabel` dan target area sentuh yang presisi.
+- Penambahan beberapa data entri diary baru untuk menguji stabilitas tampilan list dan grid.
 
-### Fitur yang Diselesaikan
-1. Halaman Utama (DiaryListScreen): Membuat layar daftar utama yang menampilkan teks sambutan, foto profil, dan kumpulan catatan harian
-2. Komponen Terpisah (Reusable Component): Membuat komponen khusus DiaryCard agar elemen UI kartu bisa digunakan berulang kali tanpa menulis ulang kode
-3. Penerapan Props: Mengalirkan data dinamis (judul, tanggal, preview isi buku harian, gambar, dan tipe mood) dari file utama ke dalam komponen DiaryCard
-4. Dynamic Styling (Gaya Dinamis): Mengubah warna border (garis tepi) pada kartu secara otomatis menggunakan fungsi switch yang merespons perubahan teks pada properti moodType
-5. Penggunaan Aset Lokal: Mengimpor dan merender gambar secara offline yang tersimpan di dalam folder assets/moods
-
-Screenshoot Aplikasi:
-<img width="738" height="1600" alt="Diary-App" src="https://github.com/user-attachments/assets/d01be697-2e25-482d-b064-8c4f8e5de207" />
+## Cara Menjalankan Project
+1. Buka terminal, lalu pastikan Anda berada di dalam direktori folder proyek.
+2. Jika ini adalah pertama kalinya proyek dijalankan, instal semua dependensi yang dibutuhkan dengan perintah:
+   ```bash
+   npm install
