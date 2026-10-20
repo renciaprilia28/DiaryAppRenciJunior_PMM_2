@@ -1,116 +1,115 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, useWindowDimensions } from 'react-native';
 import DiaryCard from '../components/DiaryCard';
+import DiaryDetailModal from '../components/DiaryDetailModal';
+import { COLORS, SPACE, TYPO, BREAKPOINTS } from '../styles/tokens';
 
-import buketImage from '../../assets/moods/Buket.jpg';
-import buket1Image from '../../assets/moods/BuketBiru.jpg';
-import bungaImage from '../../assets/moods/BungaBagus.jpg';
-import candidImage from '../../assets/moods/CandidBunga.jpg';
-import mawarImage from '../../assets/moods/MawarBiru.jpg';
-import sayangku from '../../assets/moods/Sayangku.jpg';
-
-const diaryEntries = [
+const DATA = [
   {
     id: 1,
-    title: 'Biru Itu Indah',
-    date: '1995-05-11',
-    preview: 'Langit Adalah Hal Yang Menenangkan',
-    moodImage: buketImage, 
-    moodType: 'happy',
+    title: 'Pagi yang Tenang',
+    date: '2025-10-06',
+    preview: 'Bangun lebih pagi...',
+    body: 'Catatan lengkap...',
+    moodUri: 'https://picsum.photos/seed/happy/200',
+    heroUri: 'https://picsum.photos/seed/happyhero/800/450',
   },
   {
     id: 2,
-    title: 'Malam Yang Syahdu',
-    date: '2002-05-27',
-    preview: 'Malam Yang Indah Untuk Melamun',
-    moodImage: buket1Image, 
-    moodType: 'calm',
+    title: 'Produktif di Kampus',
+    date: '2025-10-05',
+    preview: 'Menyelesaikan modul...',
+    body: 'Kemajuan proyek...',
+    moodUri: 'https://picsum.photos/seed/focus/200',
+    heroUri: 'https://picsum.photos/seed/focushero/800/450',
   },
   {
     id: 3,
-    title: 'Lelah Dan Membosankan',
-    date: '2005-04-28',
-    preview: 'Semua Hal Di Dunia Ini Melelahkan',
-    moodImage: bungaImage, 
-    moodType: 'tired',
+    title: 'Senja di Taman',
+    date: '2025-10-04',
+    preview: 'Membaca buku...',
+    body: 'Refleksi singkat...',
+    moodUri: 'https://picsum.photos/seed/calm/200',
+    heroUri: 'https://picsum.photos/seed/calmhero/800/450',
   },
   {
     id: 4,
-    title: 'Jalan Yang Indah',
-    date: '1989-09-14',
-    preview: 'Setiap Menyusuri Jalan Ini Adalah Hal Yang Menyenangkan',
-    moodImage: candidImage,
-    moodType: 'happy',
+    title: 'Makan Siang Bersama Teman',
+    date: '2025-10-03',
+    preview: 'Mencoba restoran baru di dekat stasiun...',
+    body: 'Hari ini sangat menyenangkan karena bisa berkumpul dengan teman lama dan berbagi cerita.',
+    moodUri: 'https://picsum.photos/seed/joy/200',
+    heroUri: 'https://picsum.photos/seed/joyhero/800/450',
   },
   {
     id: 5,
-    title: 'Pelangi Disaat Yang Tepat',
-    date: '1982-10-08',
-    preview: 'Setiap Selesai Kesulitan Pasti Akan Ada Kemudahan',
-    moodImage: mawarImage,
-    moodType: 'calm',
-  },
+    title: 'Persiapan Ujian Akhir',
+    date: '2025-10-02',
+    preview: 'Merangkum materi dari pertemuan pertama...',
+    body: 'Fokus belajar seharian di perpustakaan agar siap menghadapi ujian praktikum besok.',
+    moodUri: 'https://picsum.photos/seed/study/200',
+    heroUri: 'https://picsum.photos/seed/studyhero/800/450',
+  }
 ];
 
 export default function DiaryListScreen() {
-  return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Section Header dengan Avatar */}
-      <View style={styles.headerContainer}>
-        <View>
-          <Text style={styles.welcomeText}>Selamat Datang di,</Text>
-          <Text style={styles.headerTitle}>Buku Harian Renci</Text>
-        </View>
-        <Image
-          source={sayangku} // 
-          style={styles.sayangku}
-        />
-      </View>
+  const { width } = useWindowDimensions();
+  const twoCols = width >= BREAKPOINTS.tablet;
+  const [selected, setSelected] = useState(null);
 
-      {/* Daftar Kartu Diary */}
-      {diaryEntries.map((entry) => (
-        <DiaryCard
-          key={entry.id}
-          title={entry.title}
-          date={entry.date}
-          preview={entry.preview}
-          moodImage={entry.moodImage}
-          moodType={entry.moodType}
-        />
-      ))}
-    </ScrollView>
+  const keyForCols = useMemo(() => (twoCols ? 'grid2' : 'list1'), [twoCols]);
+
+  const renderItem = ({ item }) => (
+    <View style={[styles.itemWrap, twoCols && styles.itemWrap2]}>
+      <DiaryCard
+        title={item.title}
+        date={item.date}
+        preview={item.preview}
+        moodUri={item.moodUri}
+        variant={twoCols ? 'grid' : 'list'}
+        onPress={() => setSelected(item)}
+      />
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Buku Harian</Text>
+      <FlatList
+        key={keyForCols}
+        data={DATA}
+        numColumns={twoCols ? 2 : 1}
+        keyExtractor={(it) => String(it.id)}
+        renderItem={renderItem}
+        columnWrapperStyle={twoCols ? { gap: SPACE.m } : undefined}
+        contentContainerStyle={{
+          padding: SPACE.l,
+          gap: SPACE.m,
+          paddingTop: SPACE.m,
+        }}
+        ListEmptyComponent={
+          <Text style={styles.empty}>Belum ada entri.</Text>
+        }
+      />
+      <DiaryDetailModal
+        visible={!!selected}
+        entry={selected}
+        onClose={() => setSelected(null)}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  content: {
-    padding: 16,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 8,
-  },
-  welcomeText: {
-    fontSize: 14,
-    color: '#6b7280',
-  },
-  headerTitle: {
-    fontSize: 24,
+  container: { flex: 1, backgroundColor: COLORS.surface },
+  header: {
+    fontSize: TYPO.h1,
     fontWeight: '700',
-    color: '#111827',
+    paddingHorizontal: SPACE.l,
+    paddingTop: SPACE.l,
+    color: COLORS.text,
   },
-  sayangku: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 2,
-    borderColor: '#3b82f6',
-  },
+  itemWrap: { flex: 1 },
+  itemWrap2: { flex: 1 / 2 },
+  empty: { textAlign: 'center', color: COLORS.muted, marginTop: 40 },
 });
